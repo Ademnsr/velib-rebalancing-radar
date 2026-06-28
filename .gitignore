@@ -1,0 +1,24 @@
+# Secrets, jamais commité
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+
+# Airflow
+airflow/logs/
+
+# Fichiers de données locaux
+*.parquet
+
+# OS / éditeur
+.DS_Store
+.vscode/
+.idea/
