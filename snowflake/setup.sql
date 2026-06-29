@@ -1,0 +1,55 @@
+--creation du warehouse
+CREATE WAREHOUSE IF NOT EXISTS VELIB_WH
+    WAREHOUSE_SIZE = 'XSMALL'
+    AUTO_SUSPEND = 60
+    AUTO_RESUME = TRUE
+    INITIALLY_SUSPENDED = TRUE;
+--creation du db et des schémas
+CREATE DATABASE IF NOT EXISTS VELIB_DB;
+CREATE SCHEMA IF NOT EXISTS VELIB_DB.RAW;
+CREATE SCHEMA IF NOT EXISTS VELIB_DB.STAGING;
+CREATE SCHEMA IF NOT EXISTS VELIB_DB.MARTS;
+CREATE STORAGE INTEGRATION IF NOT EXISTS velib_s3_stage_int
+  TYPE = EXTERNAL_STAGE
+  STORAGE_PROVIDER = 'S3'
+  ENABLED = TRUE
+  STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::422653419881:role/velib-snowflake-role'
+  STORAGE_ALLOWED_LOCATIONS = ('s3://velib-adem-data-lake/raw/');
+
+--DESC STORAGE INTEGRATION velib_s3_stage_int;
+
+--stage
+CREATE STAGE IF NOT EXISTS velib_db.raw.s3_raw_stage
+  STORAGE_INTEGRATION = velib_s3_stage_int
+  URL = 's3://velib-adem-data-lake/raw/';
+
+--LIST @velib_db.raw.s3_raw_stage;
+
+CREATE TABLE IF NOT EXISTS VELIB_DB.RAW.STATION_STATUS_SNAPSHOTS (
+    station_id NUMBER(38,0),
+    num_bikes_available NUMBER(38,0),
+    num_docks_available NUMBER(38,0),
+    is_installed NUMBER(38,0),
+    is_renting NUMBER(38,0),
+    is_returning NUMBER(38,0),
+    last_reported NUMBER(38,0)
+);
+
+CREATE TABLE IF NOT EXISTS VELIB_DB.RAW.STATIONS (
+    station_id NUMBER(38,0),
+    stationCode VARCHAR,
+    name VARCHAR,
+    lat FLOAT,
+    lon FLOAT,
+    capacity NUMBER(38,0)
+);
+
+COPY INTO VELIB_DB.RAW.STATION_STATUS_SNAPSHOTS
+FROM @VELIB_DB.RAW.S3_RAW_STAGE/velib_status/
+FILE_FORMAT = (TYPE = PARQUET)
+MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;
+
+COPY INTO VELIB_DB.RAW.STATIONS
+FROM @VELIB_DB.RAW.S3_RAW_STAGE/velib_stations/
+FILE_FORMAT = (TYPE = PARQUET)
+MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;
