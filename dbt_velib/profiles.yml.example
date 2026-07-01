@@ -1,0 +1,14 @@
+# Profil dbt du projet. À copier vers ~/.dbt/profiles.yml puis remplir.
+dbt_velib:
+  outputs:
+    dev:
+      type: snowflake
+      account: mon_compte
+      user: mon_utilisateur
+      password: mon_mot_de_passe
+      role: mon_role
+      database: VELIB_DB
+      warehouse: VELIB_WH
+      schema: STAGING
+      threads: 4
+  target: dev

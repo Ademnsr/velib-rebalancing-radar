@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    database: VELIB_DB
+    schema: RAW
+    tables:
+      - name: stations
+      - name: station_status_snapshots
