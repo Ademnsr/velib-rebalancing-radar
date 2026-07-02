@@ -1,6 +1,9 @@
 # Secrets, jamais commité
 .env
 
+# README brouillon
+README.md
+
 # Python
 __pycache__/
 *.pyc
@@ -8,12 +11,16 @@ __pycache__/
 venv/
 
 # dbt
-dbt/target/
-dbt/dbt_packages/
-dbt/logs/
+dbt_velib/target/
+dbt_velib/dbt_packages/
+dbt_velib/logs/
 
 # Airflow
 airflow/logs/
+airflow/.env
+
+# Logs locaux divers
+logs/
 
 # Fichiers de données locaux
 *.parquet
