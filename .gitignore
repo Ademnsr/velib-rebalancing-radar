@@ -1,9 +1,6 @@
 # Secrets, jamais commité
 .env
 
-# README brouillon
-README.md
-
 # Python
 __pycache__/
 *.pyc
