@@ -19,6 +19,9 @@ dbt_velib/logs/
 airflow/logs/
 airflow/.env
 
+# Streamlit
+.streamlit/secrets.toml
+
 # Logs locaux divers
 logs/
 
