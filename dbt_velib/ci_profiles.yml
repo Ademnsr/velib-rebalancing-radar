@@ -1,0 +1,13 @@
+dbt_velib:
+  outputs:
+    dev:
+      type: snowflake
+      account: fake_account
+      user: fake_user
+      password: fake_password
+      role: fake_role
+      database: VELIB_DB
+      warehouse: fake_warehouse
+      schema: STAGING
+      threads: 1
+  target: dev

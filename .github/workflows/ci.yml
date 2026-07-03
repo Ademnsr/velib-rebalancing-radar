@@ -23,3 +23,26 @@ jobs:
 
       - name: Verifier le style du code
         run: ruff check extraction/ dbt_velib/
+
+  dbt-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer dbt
+        run: pip install dbt-core dbt-snowflake
+
+      - name: Preparer le profil dbt factice
+        run: |
+          mkdir -p ~/.dbt
+          cp dbt_velib/ci_profiles.yml ~/.dbt/profiles.yml
+
+      - name: Compiler le projet dbt
+        working-directory: dbt_velib
+        run: dbt compile
