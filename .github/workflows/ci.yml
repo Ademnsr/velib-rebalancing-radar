@@ -45,4 +45,4 @@ jobs:
 
       - name: Compiler le projet dbt
         working-directory: dbt_velib
-        run: dbt compile
+        run: dbt parse
